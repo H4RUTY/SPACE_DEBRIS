@@ -49,43 +49,43 @@ const skills = {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.gun,
-        indicator: 'gun-cooltime-indicator'
+        indicator: 'gun-indicator'
     },
     dash: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.dash,
-        indicator: 'dash-cooltime-indicator'
+        indicator: 'dash-indicator'
     },
     barrier: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.barrier,
-        indicator: 'barrier-cooltime-indicator'
+        indicator: 'barrier-indicator'
     },
     guardian: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.guardian,
-        indicator: 'guardian-cooltime-indicator'
+        indicator: 'guardian-indicator'
     },
     invisible: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.invisible,
-        indicator: 'invisible-cooltime-indicator'
+        indicator: 'invisible-indicator'
     },
     dwarf: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.dwarf,
-        indicator: 'dwarf-cooltime-indicator'
+        indicator: 'dwarf-indicator'
     },
     sloMo: {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.sloMo,
-        indicator: 'slo-mo-cooltime-indicator'
+        indicator: 'slo-mo-indicator'
     },
     timeWarp: {
         lastUsedTime: 0,

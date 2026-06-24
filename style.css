@@ -71,13 +71,13 @@ ul {
     width: 120px;
 }
 
-#dash-cooltime-indicator,
-#gun-cooltime-indicator,
-#barrier-cooltime-indicator,
-#guardian-cooltime-indicator,
-#invisible-cooltime-indicator,
-#dwarf-cooltime-indicator,
-#slo-mo-cooltime-indicator,
+#dash-indicator,
+#gun-indicator,
+#barrier-indicator,
+#guardian-indicator,
+#invisible-indicator,
+#dwarf-indicator,
+#slo-mo-indicator,
 #timewarp-indicator {
     border: 1px solid #4c566a;
     border-radius: 5px;
