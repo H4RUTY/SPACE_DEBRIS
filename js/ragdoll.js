@@ -2,25 +2,23 @@
 export const createRagdoll = (x, y, scale = 1, options = {}) => {
     const { Body, Bodies, Constraint, Composite } = Matter;
 
-    const baseCollisionGroup = Body.nextGroup(true);
-
     const headOptions = {
         label: 'head',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: [15 * scale, 15 * scale, 15 * scale, 15 * scale] },
         ...options
     };
 
     const chestOptions = {
         label: 'chest',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: [20 * scale, 20 * scale, 26 * scale, 26 * scale] },
         ...options
     };
 
     const leftArmOptions = {
         label: 'left-arm',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: 10 * scale },
         ...options
     };
@@ -29,7 +27,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
 
     const rightArmOptions = {
         label: 'right-arm',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: 10 * scale },
         ...options
     };
@@ -38,7 +36,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
 
     const leftLegOptions = {
         label: 'left-leg',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: 10 * scale },
         ...options
     };
@@ -47,7 +45,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
 
     const rightLegOptions = {
         label: 'right-leg',
-        collisionFilter: { group: baseCollisionGroup },
+        collisionFilter: { group: Body.nextGroup(true) },
         chamfer: { radius: 10 * scale },
         ...options
     };
@@ -65,12 +63,15 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
     const rightUpperLeg = Bodies.rectangle(x + 20 * scale, y + 57 * scale, 20 * scale, 40 * scale, rightLegOptions);
     const rightLowerLeg = Bodies.rectangle(x + 20 * scale, y + 97 * scale, 20 * scale, 60 * scale, rightLowerLegOptions);
 
+    const constraintRenderOption = { visible: false };
+
     const chestToRightUpperArm = Constraint.create({
         bodyA: chest,
         bodyB: rightUpperArm,
         pointA: { x: 24 * scale, y: -23 * scale },
         pointB: { x: 0, y: -8 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const chestToLeftUpperArm = Constraint.create({
@@ -79,6 +80,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: -24 * scale, y: -23 * scale },
         pointB: { x: 0, y: -8 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const chestToLeftUpperLeg = Constraint.create({
@@ -87,6 +89,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: -10 * scale, y: 30 * scale },
         pointB: { x: 0, y: -10 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const chestToRightUpperLeg = Constraint.create({
@@ -95,6 +98,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 10 * scale, y: 30 * scale },
         pointB: { x: 0, y: -10 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const upperToLowerRightArm = Constraint.create({
@@ -103,6 +107,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 0, y: 15 * scale },
         pointB: { x: 0, y: -25 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const upperToLowerLeftArm = Constraint.create({
@@ -111,6 +116,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 0, y: 15 * scale },
         pointB: { x: 0, y: -25 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const upperToLowerLeftLeg = Constraint.create({
@@ -119,6 +125,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 0, y: 20 * scale },
         pointB: { x: 0, y: -20 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const upperToLowerRightLeg = Constraint.create({
@@ -127,6 +134,7 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 0, y: 20 * scale },
         pointB: { x: 0, y: -20 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const headContraint = Constraint.create({
@@ -135,12 +143,14 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
         pointA: { x: 0, y: 25 * scale },
         pointB: { x: 0, y: -35 * scale },
         stiffness: 0.6,
+        render: constraintRenderOption
     });
 
     const legToLeg = Constraint.create({
         bodyA: leftLowerLeg,
         bodyB: rightLowerLeg,
         stiffness: 0.01,
+        render: constraintRenderOption
     });
 
     return Composite.create({
