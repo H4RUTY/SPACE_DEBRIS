@@ -1,0 +1,130 @@
+body {
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    background-color: #000;
+    color: #d8dee9;
+}
+
+ul {
+    list-style: none;
+}
+
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+#start-screen-box {
+    perspective: 200px;
+}
+
+#title {
+    color: #5e81ac;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 80px;
+    transform: rotateX(30deg);
+    transform-origin: bottom center;
+}
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('space.jpeg');
+    background-repeat: repeat;
+    background-position: 0 0;
+}
+
+#game canvas {
+    background: transparent !important;
+}
+
+#count-container {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+}
+
+#cooltime-container {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+}
+
+.indicator-child {
+    display: flex;
+    align-items: center;
+}
+
+.indicator-label {
+    width: 120px;
+}
+
+#dash-cooltime-indicator,
+#gun-cooltime-indicator,
+#barrier-cooltime-indicator,
+#guardian-cooltime-indicator,
+#invisible-cooltime-indicator,
+#dwarf-cooltime-indicator,
+#slo-mo-cooltime-indicator,
+#timewarp-indicator {
+    border: 1px solid #4c566a;
+    border-radius: 5px;
+}
+
+#gravity-indicator-container {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+}
+
+#gravity-indicator {
+    border-radius: 50%;
+    border: 1px solid #4c566a;
+    z-index: 100;
+}
+
+#log {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 100;
+}
+
+.log-item {
+    padding: 4px;
+}
+
+#game-over {
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#game-over-title {
+    color: #bf616a;
+    font-weight: bold;
+    font-size: 60px;
+}
