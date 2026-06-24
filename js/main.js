@@ -91,7 +91,8 @@ const skills = {
         lastUsedTime: 0,
         activeTimer: 0,
         config: CONFIG.timeWarp,
-        indicator: 'timewarp-indicator' }
+        indicator: 'timewarp-indicator'
+    }
 };
 
 window.addEventListener("resize", () => {
