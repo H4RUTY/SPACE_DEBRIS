@@ -40,7 +40,10 @@ export function drawGravityIndicator(stickX, stickY) {
 
     gravityCtx.beginPath();
     gravityCtx.moveTo(gravityCenterX, gravityCenterY);
-    gravityCtx.lineTo(gravityCenterX + stickX * gravityIndicator.width, gravityCenterY + stickY * gravityIndicator.height);
+    gravityCtx.lineTo(
+        gravityCenterX + stickX * gravityIndicator.width,
+        gravityCenterY + stickY * gravityIndicator.height
+    );
     gravityCtx.closePath();
     gravityCtx.lineWidth = 2;
     gravityCtx.stroke();

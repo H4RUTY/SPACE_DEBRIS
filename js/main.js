@@ -45,14 +45,53 @@ const gameContainer = document.getElementById('game');
 let runner = Matter.Runner.create();
 
 const skills = {
-    gun:      { lastUsedTime: 0, activeTimer: 0, config: CONFIG.gun,       indicator: 'gun-cooltime-indicator' },
-    dash:     { lastUsedTime: 0, activeTimer: 0, config: CONFIG.dash,      indicator: 'dash-cooltime-indicator' },
-    barrier:  { lastUsedTime: 0, activeTimer: 0, config: CONFIG.barrier,   indicator: 'barrier-cooltime-indicator' },
-    guardian: { lastUsedTime: 0, activeTimer: 0, config: CONFIG.guardian,  indicator: 'guardian-cooltime-indicator' },
-    invisible:{ lastUsedTime: 0, activeTimer: 0, config: CONFIG.invisible, indicator: 'invisible-cooltime-indicator' },
-    dwarf:    { lastUsedTime: 0, activeTimer: 0, config: CONFIG.dwarf,     indicator: 'dwarf-cooltime-indicator' },
-    sloMo:    { lastUsedTime: 0, activeTimer: 0, config: CONFIG.sloMo,     indicator: 'slo-mo-cooltime-indicator' },
-    timeWarp: { lastUsedTime: 0, activeTimer: 0, config: CONFIG.timeWarp,  indicator: 'timewarp-indicator' }
+    gun: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.gun,
+        indicator: 'gun-cooltime-indicator'
+    },
+    dash: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.dash,
+        indicator: 'dash-cooltime-indicator'
+    },
+    barrier: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.barrier,
+        indicator: 'barrier-cooltime-indicator'
+    },
+    guardian: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.guardian,
+        indicator: 'guardian-cooltime-indicator'
+    },
+    invisible: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.invisible,
+        indicator: 'invisible-cooltime-indicator'
+    },
+    dwarf: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.dwarf,
+        indicator: 'dwarf-cooltime-indicator'
+    },
+    sloMo: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.sloMo,
+        indicator: 'slo-mo-cooltime-indicator'
+    },
+    timeWarp: {
+        lastUsedTime: 0,
+        activeTimer: 0,
+        config: CONFIG.timeWarp,
+        indicator: 'timewarp-indicator' }
 };
 
 window.addEventListener("resize", () => {
@@ -118,11 +157,17 @@ function startGame() {
 }
 
 function canUseSkill(skill, currentTime) {
-    return (currentTime - skill.lastUsedTime > skill.config.coolTime) && (skill.activeTimer <= 0);
+    const isCTEnd = currentTime - skill.lastUsedTime > skill.config.coolTime;
+    return isCTEnd && (skill.activeTimer <= 0);
 }
 
 function updateSkillUI(skill, currentTime) {
-    drawCoolTime(currentTime, skill.lastUsedTime, skill.config.coolTime, skill.indicator);
+    drawCoolTime(
+        currentTime,
+        skill.lastUsedTime,
+        skill.config.coolTime,
+        skill.indicator
+    );
 }
 
 function updateAstronautInvisibility() {
@@ -194,11 +239,16 @@ function spawnDebris() {
             break;
     }
 
-    const debriSize = Math.random() * (CONFIG.debris.maxSize - CONFIG.debris.minSize) + CONFIG.debris.minSize;
-    const debris = Matter.Bodies.rectangle(spawnX, spawnY, debriSize, debriSize, {
-        label: 'debris',
-        frictionAir: 0,
-    });
+
+    const { minSize, maxSize } = CONFIG.debris;
+    const debriSize = Math.random() * (maxSize - minSize) + minSize;
+    const debris = Matter.Bodies.rectangle(
+        spawnX,
+        spawnY,
+        debriSize,
+        debriSize,
+        { label: 'debris', frictionAir: 0 }
+    );
 
     const angle = Math.atan2(targetY - spawnY, targetX - spawnX);
     Matter.Body.setVelocity(debris, {
@@ -217,9 +267,15 @@ function spawnDebris() {
 
 
 function getSpawnInterval() {
+    const {
+        initialSpawnInterval,
+        deltaInterval,
+        minSpawnInterval
+    } = CONFIG.debris;
+
     return Math.max(
-        CONFIG.debris.initialSpawnInterval - debrisDestructionCount * CONFIG.debris.deltaInterval,
-        CONFIG.debris.minSpawnInterval
+        initialSpawnInterval - debrisDestructionCount * deltaInterval,
+        minSpawnInterval
     );
 }
 
@@ -244,9 +300,12 @@ Matter.Events.on(engine, 'collisionStart', (event) => {
         const labelB = pair.bodyB.label;
 
         // destructed debris
-        const isDebrisHit = (label, target) => (label === 'bullet' && target === 'debris') ||
-            (label === 'barrier' && target === 'debris') ||
-            (label === 'guardian' && target === 'debris');
+        const isDebrisHit = (label, target) => {
+            const isTargetDebris = target === 'debris';
+            const isValidLabel = ['bullet', 'barrier', 'guardian'].includes(label);
+
+            return isTargetDebris && isValidLabel;
+        };
 
         if (isDebrisHit(labelA, labelB) || isDebrisHit(labelB, labelA)) {
             const debrisBody = labelA === 'debris' ? pair.bodyA : pair.bodyB;
@@ -288,7 +347,8 @@ function triggerGameOver() {
     isGameStarted = false;
     isGameOver = true;
     document.getElementById('game-over').style.opacity = '1';
-    document.getElementById('score').textContent = `Your score: ${debrisDestructionCount} 🎉`;
+    document.getElementById('score').textContent =
+        `Your score: ${debrisDestructionCount} 🎉`;
 }
 
 // === handle reload ===
@@ -362,7 +422,10 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
                     timeWarpDebrisData.forEach(saved => {
                         const debris = currentBodies.find(b => b.id === saved.id);
                         if (debris) {
-                            Matter.Body.setVelocity(debris, { x: saved.vx, y: saved.vy });
+                            Matter.Body.setVelocity(
+                                debris,
+                                { x: saved.vx, y: saved.vy }
+                            );
                             Matter.Body.setAngularVelocity(debris, saved.av);
                         }
                     });
@@ -414,8 +477,13 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     const buttonCw = gamepad.buttons[11];
     const buttonCounterCw = gamepad.buttons[10];
     const spinSpeed = CONFIG.physics.spinSpeed;
-    if (buttonCw && buttonCw.pressed) Matter.Body.setAngularVelocity(chest, spinSpeed);
-    else if (buttonCounterCw && buttonCounterCw.pressed) Matter.Body.setAngularVelocity(chest, -spinSpeed);
+
+    if (buttonCw && buttonCw.pressed) {
+        Matter.Body.setAngularVelocity(chest, spinSpeed);
+    }
+    else if (buttonCounterCw && buttonCounterCw.pressed) {
+        Matter.Body.setAngularVelocity(chest, -spinSpeed);
+    }
 
     // shoot a gun
     const shootLeftButton = gamepad.buttons[6];
@@ -443,7 +511,11 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
                 targetArm.position.x + dirX,
                 targetArm.position.y + dirY,
                 CONFIG.gun.bulletRadius,
-                { frictionAir: 0, density: CONFIG.gun.bulletDensity, label: "bullet" }
+                {
+                    frictionAir: 0,
+                    density: CONFIG.gun.bulletDensity,
+                    label: "bullet"
+                }
             );
 
             Matter.Body.setVelocity(bullet, {
@@ -488,10 +560,13 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     // barrier
     const barrierButton = gamepad.buttons[3];
     if (barrierButton.pressed && canUseSkill(skills.barrier, currentTime)) {
-        activeBarrier = Matter.Bodies.circle(chest.position.x, chest.position.y, CONFIG.barrier.radius * CONFIG.general.playerSize, {
-            label: 'barrier',
-            isSensor: true,
-        });
+        activeBarrier =
+            Matter.Bodies.circle(
+                chest.position.x,
+                chest.position.y,
+                CONFIG.barrier.radius * CONFIG.general.playerSize,
+                { label: 'barrier', isSensor: true,}
+            );
 
         Matter.Composite.add(world, activeBarrier);
         skills.barrier.lastUsedTime = currentTime;
@@ -511,10 +586,13 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     const guardianButton = gamepad.buttons[0];
     if (guardianButton.pressed && canUseSkill(skills.guardian, currentTime)) {
         for (let i = 0; i < CONFIG.guardian.count; i++) {
-            const gCircle = Matter.Bodies.circle(chest.position.x, chest.position.y, CONFIG.guardian.bladeRadius, {
-                label: 'guardian',
-                isSensor: true
-            });
+            const gCircle =
+                Matter.Bodies.circle(
+                    chest.position.x,
+                    chest.position.y,
+                    CONFIG.guardian.bladeRadius,
+                    { label: 'guardian', isSensor: true}
+                );
 
             activeGuardians.push(gCircle);
             Matter.Composite.add(world, gCircle);
@@ -574,7 +652,8 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     // time warp
     const timeWarpButton = gamepad.buttons[5];
     if (timeWarpButton.pressed && canUseSkill(skills.timeWarp, currentTime)) {
-        const debris = Matter.Composite.allBodies(world).filter(b => b.label === 'debris');
+        const debris =
+            Matter.Composite.allBodies(world).filter(b => b.label === 'debris');
 
         debris.forEach(debris => {
             timeWarpDebrisData.push({
@@ -585,7 +664,10 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
             });
 
             // reverse velocity
-            Matter.Body.setVelocity(debris, { x: -debris.velocity.x, y: -debris.velocity.y });
+            Matter.Body.setVelocity(
+                debris,
+                { x: -debris.velocity.x, y: -debris.velocity.y }
+            );
             Matter.Body.setAngularVelocity(debris, -debris.angularVelocity);
         });
 
@@ -594,14 +676,23 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
         drawLog('Time Warp!', CONFIG.colors.fg);
     }
 
-    //  update each ui
+    // update each ui
     Object.keys(skills).forEach(key => updateSkillUI(skills[key], currentTime));
 
     // camera following logic
-    if (chest.position.x > camera.x + camera.deadZoneWidth / 2) camera.x = chest.position.x - camera.deadZoneWidth / 2;
-    else if (chest.position.x < camera.x - camera.deadZoneWidth / 2) camera.x = chest.position.x + camera.deadZoneWidth / 2;
-    if (chest.position.y > camera.y + camera.deadZoneHeight / 2) camera.y = chest.position.y - camera.deadZoneHeight / 2;
-    else if (chest.position.y < camera.y - camera.deadZoneHeight / 2) camera.y = chest.position.y + camera.deadZoneHeight / 2;
+    if (chest.position.x > camera.x + camera.deadZoneWidth / 2) {
+        camera.x = chest.position.x - camera.deadZoneWidth / 2;
+    }
+    else if (chest.position.x < camera.x - camera.deadZoneWidth / 2) {
+        camera.x = chest.position.x + camera.deadZoneWidth / 2;
+    }
+
+    if (chest.position.y > camera.y + camera.deadZoneHeight / 2) {
+        camera.y = chest.position.y - camera.deadZoneHeight / 2;
+    }
+    else if (chest.position.y < camera.y - camera.deadZoneHeight / 2) {
+        camera.y = chest.position.y + camera.deadZoneHeight / 2;
+    }
 
     Matter.Render.lookAt(render, {
         min: { x: camera.x - windowWidth / 2, y: camera.y - windowHeight / 2 },
@@ -609,5 +700,6 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     });
 
     const scrollFactor = CONFIG.camera.scrollFactor;
-    gameContainer.style.backgroundPosition = `${-camera.x * scrollFactor}px ${-camera.y * scrollFactor}px`;
+    gameContainer.style.backgroundPosition =
+        `${-camera.x * scrollFactor}px ${-camera.y * scrollFactor}px`;
 });

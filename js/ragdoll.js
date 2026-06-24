@@ -52,16 +52,26 @@ export const createRagdoll = (x, y, scale = 1, options = {}) => {
 
     const rightLowerLegOptions = { ...rightLegOptions };
 
-    const head = Bodies.rectangle(x, y - 60 * scale, 34 * scale, 40 * scale, headOptions);
-    const chest = Bodies.rectangle(x, y, 55 * scale, 80 * scale, chestOptions);
-    const rightUpperArm = Bodies.rectangle(x + 39 * scale, y - 15 * scale, 20 * scale, 40 * scale, rightArmOptions);
-    const rightLowerArm = Bodies.rectangle(x + 39 * scale, y + 25 * scale, 20 * scale, 60 * scale, rightLowerArmOptions);
-    const leftUpperArm = Bodies.rectangle(x - 39 * scale, y - 15 * scale, 20 * scale, 40 * scale, leftArmOptions);
-    const leftLowerArm = Bodies.rectangle(x - 39 * scale, y + 25 * scale, 20 * scale, 60 * scale, leftLowerArmOptions);
-    const leftUpperLeg = Bodies.rectangle(x - 20 * scale, y + 57 * scale, 20 * scale, 40 * scale, leftLegOptions);
-    const leftLowerLeg = Bodies.rectangle(x - 20 * scale, y + 97 * scale, 20 * scale, 60 * scale, leftLowerLegOptions);
-    const rightUpperLeg = Bodies.rectangle(x + 20 * scale, y + 57 * scale, 20 * scale, 40 * scale, rightLegOptions);
-    const rightLowerLeg = Bodies.rectangle(x + 20 * scale, y + 97 * scale, 20 * scale, 60 * scale, rightLowerLegOptions);
+    const createPart = (dx, dy, w, h, options) => {
+        return Bodies.rectangle(
+            x + dx * scale,
+            y + dy * scale,
+            w * scale,
+            h * scale,
+            options
+        );
+    };
+
+    const head          = createPart(  0, -60, 34, 40, headOptions);
+    const chest         = createPart(  0,   0, 55, 80, chestOptions);
+    const rightUpperArm = createPart( 39, -15, 20, 40, rightArmOptions);
+    const rightLowerArm = createPart( 39,  25, 20, 60, rightLowerArmOptions);
+    const leftUpperArm  = createPart(-39, -15, 20, 40, leftArmOptions);
+    const leftLowerArm  = createPart(-39,  25, 20, 60, leftLowerArmOptions);
+    const leftUpperLeg  = createPart(-20,  57, 20, 40, leftLegOptions);
+    const leftLowerLeg  = createPart(-20,  97, 20, 60, leftLowerLegOptions);
+    const rightUpperLeg = createPart( 20,  57, 20, 40, rightLegOptions);
+    const rightLowerLeg = createPart( 20,  97, 20, 60, rightLowerLegOptions);
 
     const constraintRenderOption = { visible: false };
 
