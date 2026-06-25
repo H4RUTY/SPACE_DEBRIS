@@ -367,8 +367,6 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
     const gamepad = getGamepad();
     if (!gamepad) return;
 
-    const currentTime = Date.now();
-
     // simply reload when BACK button was pressed
     if(gamepad.buttons[8].pressed) {
         reloadWindow();
@@ -384,6 +382,7 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
         return;
     }
 
+    const currentTime = Date.now();
     const deltaTime = currentTime - lastFrameTime;
     lastFrameTime = currentTime;
 
