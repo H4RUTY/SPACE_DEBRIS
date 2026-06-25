@@ -369,19 +369,13 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
 
     const currentTime = Date.now();
 
-    if (isGameOver) {
-        if(gamepad.buttons[8].pressed) reloadWindow();
-
-        const startButton = gamepad.buttons[9];
-        if (startButton.pressed) {
-            initGame();
-            startGame();
-        }
+    // simply reload when BACK button was pressed
+    if(gamepad.buttons[8].pressed) {
+        reloadWindow();
         return;
     }
-    if (!isGameStarted) {
-        if(gamepad.buttons[8].pressed) reloadWindow();
 
+    if (isGameOver || !isGameStarted) {
         const startButton = gamepad.buttons[9];
         if (startButton.pressed) {
             initGame();
@@ -438,9 +432,6 @@ Matter.Events.on(engine, 'beforeUpdate', () => {
 
     const threshold = CONFIG.gamepad.threshold;
     const chest = astronaut.bodies[0];
-
-    // simply reload when BACK button was pressed
-    if(gamepad.buttons[8].pressed) reloadWindow();
 
     // change gravity using left stick
     let leftStickX = gamepad.axes[0];
